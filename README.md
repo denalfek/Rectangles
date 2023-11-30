@@ -1,1 +1,1 @@
-# Rectangles
+# Triangles

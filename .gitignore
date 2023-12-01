@@ -1,3 +1,10 @@
 
-Triangles/.idea/.idea.Triangles.dir/.idea/
+Triangles/.idea/
 Triangles/obj/
+Triangles/bin/
+TrianglesTests/obj/
+TrianglesTests/bin/
+.idea/.idea.Triangles/.idea/
+
+
+Triangles.sln.DotSettings.user

@@ -1,19 +1,17 @@
-using OneOf.Types;
 using Triangles;
 
 namespace TrianglesTests;
 
-using Result = OneOf.OneOf<TriangleType, Error<string>>;
-using Err = Error<string>;
-
 public class TriangleTypeDetectorTests
 {
+    private const string ErrorText = "Triangle doesn't exists";
+    
     [Theory]
     [InlineData(9.04, 9.89, 4.0938, TriangleType.Acute)]
-    [InlineData(3.33, 4.44, 5.55, TriangleType.Acute)]
     [InlineData(5, 6, 7, TriangleType.Acute)]
     [InlineData(4.02, 2.589, 6.19, TriangleType.Obtuse)]
     [InlineData(1, 2, 3, TriangleType.Obtuse)]
+    [InlineData(3.33, 4.44, 5.55, TriangleType.Right)]
     [InlineData(0.3, 0.4, 0.5, TriangleType.Right)]
     [InlineData(3.3, 4.4, 5.5, TriangleType.Right)]
     [InlineData(3, 4, 5, TriangleType.Right)]
@@ -41,6 +39,4 @@ public class TriangleTypeDetectorTests
         // Assert
         Assert.Equal(error, result.AsT1.Value);
     }
-    
-    private const string ErrorText = "Triangle doesn't exists";
 }

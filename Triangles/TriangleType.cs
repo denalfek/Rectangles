@@ -1,6 +1,6 @@
 namespace Triangles;
 
-public enum Type
+public enum TriangleType
 {
     // острый
     Acute,

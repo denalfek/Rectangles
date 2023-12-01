@@ -1,41 +1,62 @@
-﻿namespace Triangles;
+﻿using OneOf.Types;
 
-public class TypeDetector
+namespace Triangles;
+
+using Result = OneOf.OneOf<TriangleType, Error<string>>;
+
+public static class TypeDetector
 {
-    public static Type DetectTypeAsync(double a, double b, double c)
+    private const string ErrorText = "Triangle doesn't exists";
+    
+    // Implementation to determine triangle type
+    // Return "Acute", "Obtuse", "Right", or an Error with the message based on side lengths
+    // Pythagorean theorem.
+    public static Result DetectTypeAsync(decimal a, decimal b, decimal c)
     {
-        // Implementation to determine triangle type
-        // Return "Acute", "Obtuse", or "Right" based on side lengths
-        // You can use trigonometric properties to determine the angle relationships
-        // For simplicity, we'll use the Pythagorean theorem for this example
-
-        if (IsRightTriangle(a, b, c))
+        if (a <= 0 || b <= 0 || c <= 0)
         {
-            return Type.Right;
+            return new Error<string>(ErrorText);
         }
-        else if (IsObtuseTriangle(a, b, c))
+        
+        var pA = GetPower(a);
+        var pB = GetPower(b);
+        var pC = GetPower(c);
+        var sides = new[] {pA, pB, pC}.OrderByDescending(x => x).ToArray();
+        
+        if (IsRightTriangle(sides))
         {
-            return Type.Obtuse;
+            return TriangleType.Right;
         }
-        else
+        
+        if (IsObtuseTriangle(sides))
         {
-            return Type.Acute;
+            return TriangleType.Obtuse;
         }
+        if (IsAcuteTriangle(sides))
+        {
+            return TriangleType.Acute;
+        }
+        
+        return new Error<string>(ErrorText);
     }
+    
+    private static decimal GetPower(decimal side) => side * side;
 
-    private static bool IsRightTriangle(double sideA, double sideB, double sideC)
+    private static bool IsRightTriangle(IReadOnlyList<decimal> sides)
     {
         // Check if the triangle satisfies the Pythagorean theorem
-        return Math.Pow(sideA, 2) + Math.Pow(sideB, 2) == Math.Pow(sideC, 2) ||
-               Math.Pow(sideA, 2) + Math.Pow(sideC, 2) == Math.Pow(sideB, 2) ||
-               Math.Pow(sideB, 2) + Math.Pow(sideC, 2) == Math.Pow(sideA, 2);
+        return Math.Abs(sides[0] - sides[1] - sides[2]) == 0;
     }
-
-    private static bool IsObtuseTriangle(double sideA, double sideB, double sideC)
+    
+    private static bool IsObtuseTriangle(IReadOnlyList<decimal> sides)
     {
         // Check if the triangle is obtuse (sum of squares of two sides less than square of the third side)
-        return Math.Pow(sideA, 2) + Math.Pow(sideB, 2) < Math.Pow(sideC, 2) ||
-               Math.Pow(sideA, 2) + Math.Pow(sideC, 2) < Math.Pow(sideB, 2) ||
-               Math.Pow(sideB, 2) + Math.Pow(sideC, 2) < Math.Pow(sideA, 2);
+        return sides[0] > sides[1] + sides[2];
+    }
+    
+    private static bool IsAcuteTriangle(IReadOnlyList<decimal> sides)
+    {
+        // Check if the triangle is acute (sum of squares of two sides greater than square of the third side)
+        return sides[0] < sides[1] + sides[2];
     }
 }

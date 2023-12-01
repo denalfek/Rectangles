@@ -15,12 +15,12 @@ public class TriangleTypeDetectorTests
     [InlineData(0.3, 0.4, 0.5, TriangleType.Right)]
     [InlineData(3.3, 4.4, 5.5, TriangleType.Right)]
     [InlineData(3, 4, 5, TriangleType.Right)]
-    public void DetectTypeReturnsCorrectType(decimal a, decimal b, decimal c, TriangleType expected)
+    public void Given_CorrectSizes_When_DetectType_Then_ReturnsCorrectType(decimal a, decimal b, decimal c, TriangleType expected)
     {
         // Arrange
 
         // Act
-        var result = TypeDetector.DetectTypeAsync(a, b, c);
+        var result = TypeDetector.DetectType(a, b, c);
 
         // Assert
         Assert.Equal(expected, result.AsT0);
@@ -29,12 +29,12 @@ public class TriangleTypeDetectorTests
     [Theory]
     [InlineData(-1, 2, 4, ErrorText)]
     [InlineData(0, 1, 1, ErrorText)]
-    public void DetectTypeTriangleDoesntExists(decimal a, decimal b, decimal c, string error)
+    public void Given_IncorrectSizes_When_DetectType_Then_ReturnsErrorResult(decimal a, decimal b, decimal c, string error)
     {
         // Arrange
 
         // Act
-        var result = TypeDetector.DetectTypeAsync(a, b, c);
+        var result = TypeDetector.DetectType(a, b, c);
 
         // Assert
         Assert.Equal(error, result.AsT1.Value);

@@ -11,7 +11,7 @@ public static class TypeDetector
     // Implementation to determine triangle type
     // Return "Acute", "Obtuse", "Right", or an Error with the message based on side lengths
     // Pythagorean theorem.
-    public static Result DetectTypeAsync(decimal a, decimal b, decimal c)
+    public static Result DetectType(decimal a, decimal b, decimal c)
     {
         if (a <= 0 || b <= 0 || c <= 0)
         {
